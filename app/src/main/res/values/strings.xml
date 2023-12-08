@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Заметки</string>
+    <string name="title_activity_list">Главная</string>
+
+    <string name="note_header_placeholder">Заголовок</string>
+    <string name="save_note_btn_text">СОХРАНИТЬ</string>
+    <string name="note_text_placeholder">Введите текст заметки</string>
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="add_widget">Add widget</string>
+    <string name="app_widget_description">This is an app widget description</string>
+</resources>
