@@ -37,15 +37,18 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:backgroundTint="#66000000"
                 android:hint="@string/note_header_placeholder"
-                android:text="" />
+                android:text=""
+                android:textColor="@color/black"
+                android:textColorHint="#66000000" />
 
             <Button
-                android:id="@+id/button"
+                android:id="@+id/backgroundBtn"
                 android:layout_width="@dimen/note_header_height"
                 android:layout_height="@dimen/note_header_height"
                 android:layout_weight="0"
-                android:text=""
+                android:background="@color/white"
                 app:cornerRadius="3dp" />
 
         </LinearLayout>
@@ -61,6 +64,8 @@
             android:isScrollContainer="true"
             android:overScrollMode="always"
             android:scrollbarAlwaysDrawVerticalTrack="true"
+            android:textColor="@color/black"
+            android:textColorHint="#66000000"
             app:layout_constraintBottom_toTopOf="@+id/saveNoteBtn"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -73,6 +78,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@string/save_note_btn_text"
+            android:textColor="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
