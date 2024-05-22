@@ -11,9 +11,18 @@ import android.widget.Button
 import android.widget.ImageButton
 import android.widget.ImageView
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.lifecycle.LiveData
+import androidx.room.Room
+import com.example.myapplication.models.AppDatabase
+import com.example.myapplication.models.note.NoteDAO
+import com.example.myapplication.models.note.NoteEntity
+import com.example.myapplication.models.note.NoteRepository
 
 class ListActivity : ActivityWithoutBack() {
     lateinit var addNoteBtn: Button
+
+    private lateinit var repository: NoteRepository
+    private lateinit var allNotes: LiveData<List<NoteEntity>>
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -25,5 +34,14 @@ class ListActivity : ActivityWithoutBack() {
             val intent = Intent(this, NoteActivity::class.java)
             startActivity(intent)
         }
+
+        updateListNotes()
+    }
+
+    private fun updateListNotes() {
+        val dao = AppDatabase.getDatabase(application).noteDAO()
+        repository = NoteRepository(dao)
+        allNotes = repository.allNotes
+
     }
 }
