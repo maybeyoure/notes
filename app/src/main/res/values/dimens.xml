@@ -1,6 +1,7 @@
 <resources>
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="note_header_height">60dp</dimen>
+    <dimen name="note_height">100dp</dimen>
 
     <!--
 Refer to App Widget Documentation for margin information

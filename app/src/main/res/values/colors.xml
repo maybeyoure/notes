@@ -13,4 +13,8 @@
     <color name="pink">#FFE20A48</color>
     <color name="green">#FF008000</color>
     <color name="blue">#FF000080</color>
+    <color name="light_blue_400">#FF29B6F6</color>
+    <color name="light_blue_600">#FF039BE5</color>
+    <color name="gray_400">#FFBDBDBD</color>
+    <color name="gray_600">#FF757575</color>
 </resources>

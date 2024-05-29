@@ -7,8 +7,10 @@ import java.sql.Timestamp
 
 @Entity(tableName = "notes")
 data class NoteEntity(
-    @PrimaryKey(autoGenerate = true) val id: Int,
-    val title: String,
-    val text: String,
-    val created: Long = Timestamp(System.currentTimeMillis()).time
-)
+    var title: String,
+    var text: String
+) {
+    @PrimaryKey(autoGenerate = true)
+    var id: Int = 0
+    var created: Long = Timestamp(System.currentTimeMillis()).time
+}

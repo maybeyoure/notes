@@ -1,10 +1,10 @@
 package com.example.myapplication.models.note
 
-import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
+import androidx.room.Update
 
 @Dao
 interface NoteDAO {
@@ -14,6 +14,12 @@ interface NoteDAO {
     @Delete
     fun delete(note: NoteEntity)
 
-    @Query("SELECT * FROM notes")
-    fun getAll(): LiveData<List<NoteEntity>>
+    @Update
+    fun update(note: NoteEntity)
+
+    @Query("SELECT * FROM notes ORDER BY created DESC")
+    fun getAll(): List<NoteEntity>
+
+    @Query("SELECT * FROM notes WHERE id = :id")
+    fun get(id: Int): NoteEntity?
 }
