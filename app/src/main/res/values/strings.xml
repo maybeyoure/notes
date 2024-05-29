@@ -8,4 +8,8 @@
     <string name="appwidget_text">EXAMPLE</string>
     <string name="add_widget">Add widget</string>
     <string name="app_widget_description">This is an app widget description</string>
+
+    <string name="note_delete_message">Вы действительно хотите удалить запись?</string>
+    <string name="note_delete_message_yes">Да</string>
+    <string name="note_delete_message_no">Нет</string>
 </resources>
