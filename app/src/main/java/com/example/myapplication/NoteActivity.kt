@@ -1,15 +1,20 @@
 package com.example.myapplication
 
 import android.annotation.SuppressLint
+import android.graphics.Canvas
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
+import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import android.widget.Button
 import android.widget.EditText
+import android.widget.LinearLayout
 import com.example.myapplication.models.AppDatabase
 import com.example.myapplication.models.note.NoteDAO
 import com.example.myapplication.models.note.NoteEntity
+import com.example.myapplication.views.ColorCircleView
 import java.util.concurrent.Callable
 import java.util.concurrent.Executors
 
@@ -26,6 +31,10 @@ class NoteActivity : ActivityWithoutBack() {
     lateinit var noteHeader: EditText
     lateinit var noteText: EditText
     lateinit var saveNoteBtn: Button
+    lateinit var scrollColors: LinearLayout
+    lateinit var backgroundBtn: Button
+    lateinit var scrollColorsView: View
+    var scrollColorsViewShowed = false
     private lateinit var noteDAO: NoteDAO
 
     private var oldId: Int = NO_HAS_NOTE_ID
@@ -44,6 +53,7 @@ class NoteActivity : ActivityWithoutBack() {
 
         noteHeader = findViewById(R.id.noteHeader)
         noteText = findViewById(R.id.noteText)
+        scrollColors = findViewById(R.id.scrollColors)
 
         oldId = intent.getIntExtra(NOTE_ID, NO_HAS_NOTE_ID)
         if (oldId != NO_HAS_NOTE_ID) {
@@ -66,6 +76,41 @@ class NoteActivity : ActivityWithoutBack() {
 
         saveNoteBtn = findViewById(R.id.saveNoteBtn)
         saveNoteBtn.setOnClickListener { saveNote() }
+
+        drawColorCircles()
+
+        backgroundBtn = findViewById(R.id.backgroundBtn)
+        scrollColorsView = findViewById(R.id.scrollColorsView)
+        backgroundBtn.setOnClickListener {
+            val animation = AnimationUtils.loadAnimation(this,
+                if (scrollColorsViewShowed) R.anim.color_selector_hide else R.anim.color_selector_show)
+            scrollColorsViewShowed = !scrollColorsViewShowed
+            scrollColorsView.startAnimation(animation)
+        }
+    }
+
+    private fun drawColorCircles() {
+        intArrayOf(
+            getColor(R.color.white),
+            getColor(R.color.light_blue),
+            getColor(R.color.light_green),
+            getColor(R.color.light_pink),
+            getColor(R.color.beige),
+            getColor(R.color.dark_beige),
+            getColor(R.color.khaki),
+        ).map {
+            val colorCircle = ColorCircleView(this, it)
+            scrollColors.addView(colorCircle)
+
+
+            val colorSize = resources.getDimension(R.dimen.color_circle_size).toInt()
+            val offset = (resources.getDimension(R.dimen.color_selector_height).toInt() - colorSize) / 2
+            colorCircle.layoutParams.height = colorSize
+            colorCircle.layoutParams.width = colorSize
+            val param = colorCircle.layoutParams as ViewGroup.MarginLayoutParams
+            param.setMargins(offset, offset, offset, offset)
+            colorCircle.layoutParams = param
+        }
     }
 
     private fun saveNote() {

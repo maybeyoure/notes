@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="light_blue">#FF87CEEB</color>
+    <color name="light_green">#FF99FDD6</color>
+    <color name="light_pink">#FFDDA0DD</color>
+    <color name="beige">#FFF5F5DC</color>
+    <color name="dark_beige">#FFE6E6D7</color>
+    <color name="khaki">#FFF1FD9D</color>
+</resources>

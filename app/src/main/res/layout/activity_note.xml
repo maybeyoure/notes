@@ -48,7 +48,7 @@
                 android:layout_width="@dimen/note_header_height"
                 android:layout_height="@dimen/note_header_height"
                 android:layout_weight="0"
-                android:background="@color/white"
+                android:background="@drawable/palette"
                 app:cornerRadius="3dp" />
 
         </LinearLayout>
@@ -83,6 +83,24 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/editTextTextMultiLine" />
+
+        <HorizontalScrollView
+            android:id="@+id/scrollColorsView"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/color_selector_height"
+            android:layout_marginBottom="@dimen/color_selector_height_neg"
+            android:background="#000000"
+            app:flow_horizontalAlign="center"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <LinearLayout
+                android:id="@+id/scrollColors"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="horizontal" />
+        </HorizontalScrollView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
