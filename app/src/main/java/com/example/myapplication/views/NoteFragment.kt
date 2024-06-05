@@ -7,7 +7,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
 import android.widget.TextView
 import com.example.myapplication.ListActivity
 import com.example.myapplication.NoteActivity
@@ -25,6 +24,7 @@ import java.util.concurrent.Executors
 private const val ARG_PARAM_TITLE = "title"
 private const val ARG_PARAM_DATE = "data_created"
 private const val ARG_PARAM_ID = "id"
+private const val ARG_PARAM_COLOR = "color"
 
 
 class NoteFragment : Fragment() {
@@ -35,6 +35,7 @@ class NoteFragment : Fragment() {
     private lateinit var paramTitle: String
     private var paramDate: Long = 0
     private var paramId: Int = 0
+    private var paramColor: Int = 0
 
     private lateinit var noteDAO: NoteDAO
     public var note: NoteEntity? = null
@@ -45,6 +46,7 @@ class NoteFragment : Fragment() {
             paramTitle = it.getString(ARG_PARAM_TITLE)!!
             paramDate = it.getLong(ARG_PARAM_DATE)
             paramId = it.getInt(ARG_PARAM_ID)
+            paramColor = it.getInt(ARG_PARAM_COLOR)
         }
         noteDAO = AppDatabase.getDatabase(requireActivity().application).noteDAO()
         val callable = Callable {
@@ -64,6 +66,7 @@ class NoteFragment : Fragment() {
         noteTitle.text = paramTitle
         val dateFormat = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.LONG, FormatStyle.SHORT);
         noteDate.text = dateFormat.format(LocalDateTime.ofEpochSecond(paramDate / 1000, 0, ZonedDateTime.now().getOffset()))
+        view.setBackgroundColor(paramColor)
 
         noteDeleteBtn = view.findViewById(R.id.note_delete_btn)
         noteDeleteBtn.setOnClickListener() { removeNote() }
@@ -91,6 +94,7 @@ class NoteFragment : Fragment() {
         intent.putExtra(NoteActivity.NOTE_ID, note?.id)
         intent.putExtra(NoteActivity.NOTE_OLD_TITLE, note?.title)
         intent.putExtra(NoteActivity.NOTE_OLD_TEXT, note?.text)
+        intent.putExtra(NoteActivity.NOTE_OLD_COLOR, note?.color)
         startActivity(intent)
     }
 
@@ -102,6 +106,7 @@ class NoteFragment : Fragment() {
                     putString(ARG_PARAM_TITLE, note.title)
                     putLong(ARG_PARAM_DATE, note.created)
                     putInt(ARG_PARAM_ID, note.id)
+                    putInt(ARG_PARAM_COLOR, note.color)
                 }
             }
     }

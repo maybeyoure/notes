@@ -1,12 +1,13 @@
 package com.example.myapplication
 
 import android.annotation.SuppressLint
-import android.graphics.Canvas
+import android.graphics.Color
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.Button
 import android.widget.EditText
@@ -23,6 +24,7 @@ class NoteActivity : ActivityWithoutBack() {
         val NOTE_ID = "noteId"
         val NOTE_OLD_TITLE = "noteOldTitle"
         val NOTE_OLD_TEXT = "noteOldText"
+        val NOTE_OLD_COLOR = "noteOldColor"
 
         val NO_HAS_NOTE_ID = -1
     }
@@ -38,6 +40,7 @@ class NoteActivity : ActivityWithoutBack() {
     private lateinit var noteDAO: NoteDAO
 
     private var oldId: Int = NO_HAS_NOTE_ID
+    private var color: Int = Color.WHITE
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -59,7 +62,9 @@ class NoteActivity : ActivityWithoutBack() {
         if (oldId != NO_HAS_NOTE_ID) {
             noteHeader.setText(intent.getStringExtra(NOTE_OLD_TITLE) ?: "")
             noteText.setText(intent.getStringExtra(NOTE_OLD_TEXT) ?: "")
+            color = intent.getIntExtra(NOTE_OLD_COLOR, Color.WHITE)
         }
+        noteText.setBackgroundColor(color)
 
         noteHeader.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
@@ -82,26 +87,23 @@ class NoteActivity : ActivityWithoutBack() {
         backgroundBtn = findViewById(R.id.backgroundBtn)
         scrollColorsView = findViewById(R.id.scrollColorsView)
         backgroundBtn.setOnClickListener {
-            val animation = AnimationUtils.loadAnimation(this,
-                if (scrollColorsViewShowed) R.anim.color_selector_hide else R.anim.color_selector_show)
+            val animation: Animation
+            if (scrollColorsViewShowed) {
+                animation = AnimationUtils.loadAnimation(this, R.anim.color_selector_hide)
+                scrollColorsView.top += scrollColorsView.height / 2
+            } else {
+                animation = AnimationUtils.loadAnimation(this, R.anim.color_selector_show)
+                scrollColorsView.top -= scrollColorsView.height
+            }
             scrollColorsViewShowed = !scrollColorsViewShowed
             scrollColorsView.startAnimation(animation)
         }
     }
 
     private fun drawColorCircles() {
-        intArrayOf(
-            getColor(R.color.white),
-            getColor(R.color.light_blue),
-            getColor(R.color.light_green),
-            getColor(R.color.light_pink),
-            getColor(R.color.beige),
-            getColor(R.color.dark_beige),
-            getColor(R.color.khaki),
-        ).map {
-            val colorCircle = ColorCircleView(this, it)
+        NoteColors.values().map {
+            val colorCircle = ColorCircleView(this, getColor(it.resourceId))
             scrollColors.addView(colorCircle)
-
 
             val colorSize = resources.getDimension(R.dimen.color_circle_size).toInt()
             val offset = (resources.getDimension(R.dimen.color_selector_height).toInt() - colorSize) / 2
@@ -110,6 +112,11 @@ class NoteActivity : ActivityWithoutBack() {
             val param = colorCircle.layoutParams as ViewGroup.MarginLayoutParams
             param.setMargins(offset, offset, offset, offset)
             colorCircle.layoutParams = param
+
+            colorCircle.setOnClickListener() {
+                color = colorCircle.color
+                noteText.setBackgroundColor(color)
+            }
         }
     }
 
@@ -126,7 +133,8 @@ class NoteActivity : ActivityWithoutBack() {
         val callable = Callable {
             val note = NoteEntity(
                 text = noteText.text.toString(),
-                title = noteHeader.text.toString()
+                title = noteHeader.text.toString(),
+                color = color
             )
             noteDAO.insertAll(note)
         }
@@ -140,6 +148,7 @@ class NoteActivity : ActivityWithoutBack() {
         val note = future!!.get()!!
         note.title = noteHeader.text.toString()
         note.text = noteText.text.toString()
+        note.color = color
         val callable2 = Callable {
             noteDAO.update(note)
             note

@@ -5,13 +5,15 @@ import android.graphics.Canvas
 import android.graphics.Paint
 import android.util.AttributeSet
 import android.view.View
-import android.view.ViewGroup
 import com.example.myapplication.R
 
 
 class ColorCircleView : View {
     private var _color = 0
     private var _radius = 0f
+
+    public var color: Int = 0
+        get() = _color
 
     constructor(context: Context, color: Int) : super(context) {
         init(null, 0)

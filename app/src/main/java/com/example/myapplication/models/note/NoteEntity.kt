@@ -8,7 +8,8 @@ import java.sql.Timestamp
 @Entity(tableName = "notes")
 data class NoteEntity(
     var title: String,
-    var text: String
+    var text: String,
+    var color: Int
 ) {
     @PrimaryKey(autoGenerate = true)
     var id: Int = 0
